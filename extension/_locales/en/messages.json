@@ -1,0 +1,14 @@
+{
+  "extensionName": {
+    "message": "Clipboard Typer"
+  },
+  "extensionDescription": {
+    "message": "Simulate human typing from the clipboard into the focused field."
+  },
+  "actionTitle": {
+    "message": "Clipboard Typer"
+  },
+  "commandTypeFromClipboard": {
+    "message": "Type clipboard into focused field"
+  }
+}

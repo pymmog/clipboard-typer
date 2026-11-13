@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Clipboard Typer — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Typing speed</h1>
+      <form id="form">
+        <label>
+          Delay between keys (ms)
+          <input id="delayMs" name="delayMs" type="number" min="0" max="500" step="1" required />
+        </label>
+        <label>
+          Random jitter (± ms)
+          <input id="jitterMs" name="jitterMs" type="number" min="0" max="200" step="1" required />
+        </label>
+        <label class="checkbox">
+          <input id="respectNewlines" name="respectNewlines" type="checkbox" />
+          Type line breaks (Enter) for newlines in clipboard text
+        </label>
+        <p class="saved" id="saved" hidden>Settings saved.</p>
+        <button type="submit">Save</button>
+      </form>
+
+      <section class="shortcut">
+        <h2>Keyboard shortcut</h2>
+        <p>
+          Press <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd> on Mac (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd> elsewhere) while a text field is focused.
+          This is handled on the page, so Safari’s extension settings should not list a shortcut.
+          If you still see shortcut rows there, clear them with the × button. Those rows were capturing the keys before the page could type.
+        </p>
+      </section>
+
+      <section class="shortcut">
+        <h2>Clipboard access</h2>
+        <p>If you see “Could not read clipboard”:</p>
+        <ol>
+          <li>
+            <strong>macOS Ventura+:</strong> System Settings → Privacy &amp; Security → <strong>Pasteboard</strong> → enable
+            <strong>Google Chrome</strong> or <strong>Safari</strong> (wording may be “Allow applications to paste to other applications”).
+          </li>
+          <li>
+            <strong>Chrome:</strong> <code>chrome://extensions</code> → reload <strong>Clipboard Typer</strong> → reload the website tab.
+          </li>
+          <li>
+            Click the <strong>toolbar icon</strong> once to type (no popup). The keyboard shortcut runs the same flow in the background.
+          </li>
+          <li>
+            <strong>Safari:</strong> Safari → Settings → Extensions → Clipboard Typer → ensure it is allowed for the sites you use.
+          </li>
+        </ol>
+      </section>
+    </main>
+    <script src="options.js"></script>
+  </body>
+</html>
