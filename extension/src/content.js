@@ -5,25 +5,40 @@ globalThis.__clipboardTyperContent = true;
 
 const browserApi = typeof browser !== "undefined" ? browser : chrome;
 
-const DEFAULT_OPTIONS = {
-  delayMs: 35,
-  jitterMs: 15,
-  respectNewlines: true,
-};
-
-let typingChain = Promise.resolve();
-let busy = false;
-
 function isMac() {
   return /Mac|iPhone|iPad/.test(navigator.platform || "") || navigator.userAgent.includes("Macintosh");
 }
 
+function defaultShortcut() {
+  const mac = isMac();
+  return { key: "j", meta: mac, ctrl: false, alt: !mac, shift: true };
+}
+
+const DEFAULT_OPTIONS = {
+  delayMs: 35,
+  jitterMs: 15,
+  respectNewlines: true,
+  shortcut: defaultShortcut(),
+};
+
+let shortcut = defaultShortcut();
+
+let typingChain = Promise.resolve();
+let busy = false;
+
 function isTypeShortcut(event) {
   if (event.repeat || event.isComposing) return false;
-  if ((event.key || "").toLowerCase() !== "j") return false;
-  if (!event.shiftKey || event.altKey) return false;
-  if (isMac()) return event.metaKey && !event.ctrlKey;
-  return event.ctrlKey && !event.metaKey;
+  const key = (event.key || "").toLowerCase();
+  if (key !== shortcut.key) return false;
+  if (!!event.metaKey !== !!shortcut.meta) return false;
+  if (!!event.ctrlKey !== !!shortcut.ctrl) return false;
+  if (!!event.altKey !== !!shortcut.alt) return false;
+  if (!!event.shiftKey !== !!shortcut.shift) return false;
+  return true;
+}
+
+function applyShortcut(stored) {
+  shortcut = { ...defaultShortcut(), ...(stored || {}) };
 }
 
 function showToast(message, ok) {
@@ -52,11 +67,17 @@ function showToast(message, ok) {
 async function loadOptions() {
   try {
     const stored = await browserApi.storage.sync.get(DEFAULT_OPTIONS);
-    return { ...DEFAULT_OPTIONS, ...stored };
+    applyShortcut(stored.shortcut);
+    return { ...DEFAULT_OPTIONS, ...stored, shortcut };
   } catch {
-    return DEFAULT_OPTIONS;
+    return { ...DEFAULT_OPTIONS, shortcut };
   }
 }
+
+loadOptions();
+browserApi.storage.onChanged.addListener((changes, area) => {
+  if (area === "sync" && changes.shortcut) applyShortcut(changes.shortcut.newValue);
+});
 
 function readClipboardWithPaste(previous) {
   const previousValue = previous && !previous.isContentEditable ? previous.value : null;

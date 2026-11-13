@@ -4,7 +4,7 @@ Types the text on your clipboard into the focused field, one character at a time
 
 Use it when a site blocks paste. It works in Chrome, Helium, Edge, Brave, Chromium, Vivaldi, and Safari.
 
-Press **⌘⇧J** on Mac, or **Ctrl+Shift+J** on Windows and Linux. Clicking the toolbar icon does the same thing.
+Press **⌘⇧J** on Mac, or **Alt+Shift+J** on Windows and Linux. Clicking the toolbar icon does the same thing. Change the shortcut from the extension’s Options page. Chrome reserves **Ctrl+Shift+J** for the console, so that combination cannot be used there.
 
 ## Install
 
